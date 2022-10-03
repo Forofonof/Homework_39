@@ -145,6 +145,7 @@ class Datebase
         _players.Add(_playerIndex, new Player(nickname, level, isBanned));
         _playerIndex++;
 
+        Console.Clear();
         Console.WriteLine("Успешно! Игрок добавлен.");
     }
 
@@ -167,12 +168,14 @@ class Datebase
 
     public void BanPlayer()
     {
-        Console.WriteLine("Введите индекс игрока:");
-        ReadInt(userInput);
+        int index;
 
-        if (_players[userInput].IsBanned == false)
+        Console.WriteLine("Введите индекс игрока:");
+        ReadInt(out index);
+
+        if (_players[index].IsBanned == false)
         {
-            _players[userInput].Ban();
+            _players[index].Ban();
             Console.WriteLine("Успешно! Игрок заблокирован.");
         }
         else
@@ -183,24 +186,19 @@ class Datebase
 
     public void UnBanPlayer()
     {
-        Console.WriteLine("Введите индекс игрока:");
-        bool isNumber = int.TryParse(Console.ReadLine(), out int userInput);
+        int index;
 
-        if (isNumber == true && _players.ContainsKey(userInput) == true)
+        Console.WriteLine("Введите индекс игрока:");
+        ReadInt(out index);
+
+        if (_players[index].IsBanned == true)
         {
-            if (_players[userInput].IsBanned == true)
-            {
-                _players[userInput].UnBan();
-                Console.WriteLine("Успешно! Игрок разблокирован.");
-            }
-            else
-            {
-                Console.WriteLine("Игрок уже разблокирован!");
-            }
+            _players[index].UnBan();
+            Console.WriteLine("Успешно! Игрок разблокирован.");
         }
         else
         {
-            Console.WriteLine("Ошибка ввода!");
+            Console.WriteLine("Игрок уже разблокирован!");
         }
     }
 
@@ -221,11 +219,11 @@ class Datebase
 
     }
 
-    public void ReadInt(int userInput)
+    public void ReadInt(out int index)
     {
-        bool isNumber = int.TryParse(Console.ReadLine(), out userInput);
+        string userInput = Console.ReadLine();
 
-        if (isNumber == true && _players.ContainsKey(userInput) == true)
+        if (int.TryParse(userInput, out index) && _players.ContainsKey(index) == true)
         {
 
         }
