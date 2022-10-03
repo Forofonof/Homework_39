@@ -99,8 +99,8 @@ class Player
 
 class Datebase
 {
-    const string Yes = "y";
-    const string No = "n";
+    private const string Yes = "y";
+    private const string No = "n";
 
     private Dictionary<int, Player> _players = new Dictionary<int, Player>();
     private int _playerIndex = 0;
@@ -168,23 +168,16 @@ class Datebase
     public void BanPlayer()
     {
         Console.WriteLine("Введите индекс игрока:");
-        bool isNumber = int.TryParse(Console.ReadLine(), out int userInput);
+        ReadInt(userInput);
 
-        if (isNumber == true && _players.ContainsKey(userInput) == true)
+        if (_players[userInput].IsBanned == false)
         {
-            if (_players[userInput].IsBanned == false)
-            {
-                _players[userInput].Ban();
-                Console.WriteLine("Успешно! Игрок заблокирован.");
-            }
-            else
-            {
-                Console.WriteLine("Игрок уже заблокирован!");
-            }
+            _players[userInput].Ban();
+            Console.WriteLine("Успешно! Игрок заблокирован.");
         }
         else
         {
-            Console.WriteLine("Ошибка ввода!");
+            Console.WriteLine("Игрок уже заблокирован!");
         }
     }
 
@@ -226,5 +219,19 @@ class Datebase
             Console.WriteLine("Ошибка!");
         }
 
+    }
+
+    public void ReadInt(int userInput)
+    {
+        bool isNumber = int.TryParse(Console.ReadLine(), out userInput);
+
+        if (isNumber == true && _players.ContainsKey(userInput) == true)
+        {
+
+        }
+        else
+        {
+            Console.WriteLine("Ошибка ввода!");
+        }
     }
 }
