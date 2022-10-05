@@ -7,8 +7,8 @@ internal class Program
     {
         const string AddingPlayer = "1";
         const string ShowAllPlayers = "2";
-        const string BannedPlayer = "3";
-        const string UnbannedPlayer = "4";
+        const string BanPlayer = "3";
+        const string UnBanPlayer = "4";
         const string DeletingPlayer = "5";
         const string Exit = "6";
 
@@ -18,8 +18,8 @@ internal class Program
 
         while (isWork)
         {
-            Console.WriteLine($"{AddingPlayer} - Добавить игрока.\n{ShowAllPlayers} - Показать всех игроков.\n{BannedPlayer} - Забанить игрока.");
-            Console.WriteLine($"{UnbannedPlayer} - Разбанить игрока.\n{DeletingPlayer} - Удалить игрока.\n{Exit} - Закрыть программу.");
+            Console.WriteLine($"{AddingPlayer} - Добавить игрока.\n{ShowAllPlayers} - Показать всех игроков.\n{BanPlayer} - Забанить игрока.");
+            Console.WriteLine($"{UnBanPlayer} - Разбанить игрока.\n{DeletingPlayer} - Удалить игрока.\n{Exit} - Закрыть программу.");
             string userInput = Console.ReadLine();
             Console.Clear();
 
@@ -31,10 +31,10 @@ internal class Program
                 case ShowAllPlayers:
                     datebase.ShowPlayersDatabase();
                     break;
-                case BannedPlayer:
+                case BanPlayer:
                     datebase.BanPlayer();
                     break;
-                case UnbannedPlayer:
+                case UnBanPlayer:
                     datebase.UnBanPlayer();
                     break;
                 case DeletingPlayer:
@@ -70,11 +70,11 @@ class Player
 
     public void ShowPlayerInfo()
     {
-        TranslateWord();
+        DetermineBanStatus();
         Console.WriteLine($"Ник игрока: {Nickname}. Уровень: {Level}. Блокировка игрока: {Banned}");
     }
 
-    public void TranslateWord()
+    public void DetermineBanStatus()
     {
         if (IsBanned == true)
         {
@@ -168,17 +168,15 @@ class Datebase
 
     public void BanPlayer()
     {
-        int index;
-
         Console.WriteLine("Введите индекс игрока:");
-        ReadInt(out index);
+        ReadNumber(out bool isNumber, out int index);
 
-        if (_players[index].IsBanned == false)
+        if (_players[index].IsBanned == false && isNumber == true)
         {
             _players[index].Ban();
             Console.WriteLine("Успешно! Игрок заблокирован.");
         }
-        else
+        else if(_players[index].IsBanned == true)
         {
             Console.WriteLine("Игрок уже заблокирован!");
         }
@@ -186,17 +184,15 @@ class Datebase
 
     public void UnBanPlayer()
     {
-        int index;
-
         Console.WriteLine("Введите индекс игрока:");
-        ReadInt(out index);
+        ReadNumber(out bool isNumber, out int index);
 
-        if (_players[index].IsBanned == true)
+        if (_players[index].IsBanned == true && isNumber == true)
         {
             _players[index].UnBan();
             Console.WriteLine("Успешно! Игрок разблокирован.");
         }
-        else
+        else if (_players[index].IsBanned == false)
         {
             Console.WriteLine("Игрок уже разблокирован!");
         }
@@ -205,25 +201,19 @@ class Datebase
     public void DeletePlayer()
     {
         Console.WriteLine("Введите индекс игрока:");
-        bool isNumber = int.TryParse(Console.ReadLine(), out int userInput);
+        ReadNumber(out bool isNumber, out int userInput);
 
-        if (isNumber == true && _players.ContainsKey(userInput) == true)
+        if (_players.ContainsKey(userInput) == true && isNumber == true)
         {
             _players.Remove(userInput);
             Console.WriteLine("Успешно! Игрок удален.");
         }
-        else
-        {
-            Console.WriteLine("Ошибка!");
-        }
 
     }
 
-    public void ReadInt(out int index)
+    private void ReadNumber(out bool isNumber, out int index)
     {
-        string userInput = Console.ReadLine();
-
-        if (int.TryParse(userInput, out index) && _players.ContainsKey(index) == true)
+        if (isNumber = int.TryParse(Console.ReadLine(), out index) && _players.ContainsKey(index) == true)
         {
 
         }
