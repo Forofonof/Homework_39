@@ -68,7 +68,7 @@ class Player
         IsBanned = isBanned;
     }
 
-    public void ShowPlayerInfo()
+    public void ShowInfo()
     {
         DetermineBanStatus();
         Console.WriteLine($"Ник игрока: {Nickname}. Уровень: {Level}. Блокировка игрока: {Banned}");
@@ -155,7 +155,7 @@ class Datebase
         {
             for (int i = 0; i < _players.Count; i++)
             {
-                _players[i].ShowPlayerInfo();
+                _players[i].ShowInfo();
 
                 Console.WriteLine($"Индекс игрока: {i}");
             }
@@ -215,7 +215,7 @@ class Datebase
     {
         if (isNumber = int.TryParse(Console.ReadLine(), out index) && _players.ContainsKey(index) == true)
         {
-
+            return;
         }
         else
         {
